@@ -130,10 +130,10 @@ if __name__ == '__main__':
     icon = tk.PhotoImage(file='Icon.gif')
     window.tk.call('wm','iconphoto',window._w, icon)
 
-    window.wm_title('Archive Version Patcher')
-    window.minsize(500, 100)
+    window.wm_title('BA2 Archive Version Patcher')
+    window.minsize(500, 200)
 
-    #Two frames on top of each other to place widgets in
+    #Three frames on top of each other to place widgets in
     frame_first = tk.Frame(window)
     frame_second = tk.Frame(window)
     frame_third = tk.Frame(window)
