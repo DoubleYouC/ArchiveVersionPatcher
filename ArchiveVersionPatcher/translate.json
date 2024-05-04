@@ -1,0 +1,48 @@
+{
+  "languages": [ "English" ],
+  "title": {
+    "English": "Archive Version Patcher"
+  },
+  "btn_browse": {
+    "English": "Select Archive"
+  },
+  "btn_dir": {
+    "English": "Select Directory"
+  },
+  "btn_patch": {
+    "English": "Patch"
+  },
+  "Select archive window": {
+    "English": "Select Archive..."
+  },
+  "Select directory window": {
+    "English": "Select directory containing BA2 files to be patched..."
+  },
+  "Archive selected": {
+    "English": "Archive selected: "
+  },
+  "Directory selected": {
+    "English": "Directory selected: "
+  },
+  "Patching archive message": {
+    "English": "Patching"
+  },
+  "Patching archive complete": {
+    "English": "was successfully patched."
+  },
+  "Permission Error": {
+    "English": "You lack the permissions to modify "
+  },
+  "Unexpected version": {
+    "English": " does not have the expected version of either 7 or 8. The file will not be patched."
+  },
+  "No patch needed": {
+    "English": " is already version 1. The file will not be patched."
+  },
+  "Patched archive list": {
+    "English": "List of patched archives:"
+  },
+  "No archives patched": {
+    "English": " did not contain any archives that required patching."
+  }
+}
