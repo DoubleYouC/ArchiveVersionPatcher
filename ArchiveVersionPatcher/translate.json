@@ -30,6 +30,9 @@
   "Patching archive complete": {
     "English": "was successfully patched."
   },
+  "Files successfully patched": {
+    "English": " files were successfully patched."
+  },
   "Permission Error": {
     "English": "You lack the permissions to modify "
   },

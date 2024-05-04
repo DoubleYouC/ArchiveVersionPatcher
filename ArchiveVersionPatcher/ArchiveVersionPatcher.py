@@ -52,7 +52,7 @@ def patch_button():
         btn_browse['text'] = text['btn_browse'][language.get()]
         btn_dir['state'] = 'normal'
     elif btn_dir['text'] != text['btn_dir'][language.get()]:
-        show_list = False
+        i = 0
         list_of_patched_archives = text['Patched archive list'][language.get()]
         base_dir = btn_dir['text']
         for x in listdir(base_dir):
@@ -60,9 +60,10 @@ def patch_button():
                 archive_path = base_dir + '/' + x
                 if patch_archive(archive_path):
                     list_of_patched_archives += f'\n{archive_path}'
-                    show_list = True
-        if show_list:
-            sm(list_of_patched_archives, False, True)
+                    i += 1
+        if i > 0:
+            sm(list_of_patched_archives, False, True, False)
+            sm(str(i) + text['Files successfully patched'][language.get()])
         else:
             sm(base_dir + text['No archives patched'][language.get()], False, True)   
         btn_dir['text'] = text['btn_dir'][language.get()]
