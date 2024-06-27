@@ -3,12 +3,14 @@
 import tkinter as tk
 import json
 import logging
+import sys
 
 from tkinter import ttk
 from tkinter import messagebox
 from tkinter.filedialog import askopenfilename, askdirectory
 from os import makedirs, listdir
 from datetime import datetime
+from pathlib import Path
 
 def sm(message, error_message = False, info_message = False, update_status = True):
     #My standard Error message, statusbar update, and logging function
@@ -20,10 +22,10 @@ def sm(message, error_message = False, info_message = False, update_status = Tru
     if update_status:
         statusbar['text'] = message
     window.update()
-    
+
 def browse_button():
     btn_browse['state'] = 'disabled'
-    
+
     file = askopenfilename(title=text['Select archive window'][language.get()], filetypes=[("Bethesda Archive2 files", "*.ba2"), ("All files", "*.*")])
     if file != '':
         btn_browse['text'] = file
@@ -32,7 +34,7 @@ def browse_button():
         btn_dir['state'] = 'disabled'
     btn_browse['state'] = 'normal'
     window.update()
-    
+
 def dir_button():
     btn_dir['state'] = 'disabled'
     directory = askdirectory(title=text['Select directory window'][language.get()])
@@ -65,18 +67,18 @@ def patch_button():
             sm(list_of_patched_archives, False, True, False)
             sm(str(i) + text['Files successfully patched'][language.get()])
         else:
-            sm(base_dir + text['No archives patched'][language.get()], False, True)   
+            sm(base_dir + text['No archives patched'][language.get()], False, True)
         btn_dir['text'] = text['btn_dir'][language.get()]
         btn_browse['state'] = 'normal'
-        
-                    
+
+
 
     window.update()
-    
+
 def patch_archive(archive):
     sm(text['Patching archive message'][language.get()] + f' {archive}...')
     patched = False
-    
+
     try:
         with open(archive, "r+b") as f:
             f.seek(4)
@@ -92,7 +94,7 @@ def patch_archive(archive):
             f.close()
     except PermissionError:
         sm(text['Permission Error'][language.get()] + archive, True)
-        
+
     if patched:
         sm(f'{archive} ' + text['Patching archive complete'][language.get()])
     return patched
@@ -113,6 +115,10 @@ if __name__ == '__main__':
     log_directory_date = today.strftime("%Y %b %d %a - %H.%M.%S")
     my_app_log_directory = f'logs\\{log_directory_date}'
     my_app_log = f'{my_app_log_directory}\\log.log'
+    if getattr(sys, 'frozen', False):
+        exedir = Path(sys.executable).parent
+    else:
+        exedir = Path(__file__).parent
     makedirs(my_app_log_directory)
     logging.basicConfig(filename=my_app_log, filemode='w',
                         format='%(asctime)s - %(levelname)s - %(message)s',
@@ -122,12 +128,12 @@ if __name__ == '__main__':
     temp_file_list = []
 
     #translation json
-    with open('translate.json', encoding='utf-8') as translate_json:
+    with Path(exedir).joinpath('translate.json').open(encoding='utf-8') as translate_json:
         text = json.load(translate_json)
 
     #Create base app window
     window = tk.Tk()
-    icon = tk.PhotoImage(file='Icon.gif')
+    icon = tk.PhotoImage(file=str(Path(exedir).joinpath('Icon.gif')))
     window.tk.call('wm','iconphoto',window._w, icon)
 
     window.wm_title('BA2 Archive Version Patcher')
@@ -144,11 +150,11 @@ if __name__ == '__main__':
     language.set(text['languages'][0])
     optm_language = ttk.OptionMenu(window, language, text['languages'][0], *text['languages'], command=change_language)
     optm_language.pack(padx=5, pady=5)
-    
+
     #Select Archive button
     btn_browse = tk.Button(frame_first, text=text['btn_browse'][language.get()], command=browse_button)
     btn_browse.pack(anchor=tk.CENTER, padx=10, pady=10)
-    
+
     #Select Folder button
     btn_dir = tk.Button(frame_first, text=text['btn_dir'][language.get()], command=dir_button)
     btn_dir.pack(anchor=tk.CENTER, padx=10, pady=10)
@@ -157,7 +163,7 @@ if __name__ == '__main__':
     btn_patch = tk.Button(frame_third, text=text['btn_patch'][language.get()], command=patch_button)
     btn_patch.pack(anchor=tk.CENTER, padx=10, pady=10)
     btn_patch['state'] = 'disabled'
-    
+
     #Statusbar
     statusbar = tk.Label(frame_third, text='', bd=1, relief=tk.SUNKEN, anchor=tk.W, wraplength=500)
     statusbar.pack(side=tk.BOTTOM, padx=3, fill=tk.X)
@@ -166,6 +172,6 @@ if __name__ == '__main__':
     frame_first.pack()
     frame_second.pack()
     frame_third.pack(expand=True, fill=tk.X)
-    
+
     #Start app
     window.mainloop()
