@@ -3,7 +3,6 @@
 import tkinter as tk
 import json
 import logging
-import argparse
 
 from tkinter import ttk
 from tkinter import messagebox
@@ -21,10 +20,10 @@ def sm(message, error_message = False, info_message = False, update_status = Tru
     if update_status:
         statusbar['text'] = message
     window.update()
-
+    
 def browse_button():
     btn_browse['state'] = 'disabled'
-
+    
     file = askopenfilename(title=text['Select archive window'][language.get()], filetypes=[("Bethesda Archive2 files", "*.ba2"), ("All files", "*.*")])
     if file != '':
         btn_browse['text'] = file
@@ -33,7 +32,7 @@ def browse_button():
         btn_dir['state'] = 'disabled'
     btn_browse['state'] = 'normal'
     window.update()
-
+    
 def dir_button():
     btn_dir['state'] = 'disabled'
     directory = askdirectory(title=text['Select directory window'][language.get()])
@@ -66,18 +65,18 @@ def patch_button():
             sm(list_of_patched_archives, False, True, False)
             sm(str(i) + text['Files successfully patched'][language.get()])
         else:
-            sm(base_dir + text['No archives patched'][language.get()], False, True)
+            sm(base_dir + text['No archives patched'][language.get()], False, True)   
         btn_dir['text'] = text['btn_dir'][language.get()]
         btn_browse['state'] = 'normal'
-
-
+        
+                    
 
     window.update()
-
+    
 def patch_archive(archive):
     sm(text['Patching archive message'][language.get()] + f' {archive}...')
     patched = False
-
+    
     try:
         with open(archive, "r+b") as f:
             f.seek(4)
@@ -93,7 +92,7 @@ def patch_archive(archive):
             f.close()
     except PermissionError:
         sm(text['Permission Error'][language.get()] + archive, True)
-
+        
     if patched:
         sm(f'{archive} ' + text['Patching archive complete'][language.get()])
     return patched
@@ -109,10 +108,6 @@ def change_language(lingo):
     btn_patch['state'] = 'disabled'
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-cm", "--consolemode", help="console application mode", action="store_true")
-    args = parser.parse_args()
-
     #Make logs.
     today = datetime.now()
     log_directory_date = today.strftime("%Y %b %d %a - %H.%M.%S")
@@ -130,48 +125,47 @@ if __name__ == '__main__':
     with open('translate.json', encoding='utf-8') as translate_json:
         text = json.load(translate_json)
 
-    if not args.consolemode:
-        #Create base app window
-        window = tk.Tk()
-        icon = tk.PhotoImage(file='Icon.gif')
-        window.tk.call('wm','iconphoto',window._w, icon)
+    #Create base app window
+    window = tk.Tk()
+    icon = tk.PhotoImage(file='Icon.gif')
+    window.tk.call('wm','iconphoto',window._w, icon)
 
-        window.wm_title('BA2 Archive Version Patcher')
-        window.minsize(500, 200)
+    window.wm_title('BA2 Archive Version Patcher')
+    window.minsize(500, 200)
 
-        #Three frames on top of each other to place widgets in
-        frame_first = tk.Frame(window)
-        frame_second = tk.Frame(window)
-        frame_third = tk.Frame(window)
+    #Three frames on top of each other to place widgets in
+    frame_first = tk.Frame(window)
+    frame_second = tk.Frame(window)
+    frame_third = tk.Frame(window)
 
-        #Language dropdown
-        options = text['languages']
-        language = tk.StringVar(window)
-        language.set(text['languages'][0])
-        optm_language = ttk.OptionMenu(window, language, text['languages'][0], *text['languages'], command=change_language)
-        optm_language.pack(padx=5, pady=5)
+    #Language dropdown
+    options = text['languages']
+    language = tk.StringVar(window)
+    language.set(text['languages'][0])
+    optm_language = ttk.OptionMenu(window, language, text['languages'][0], *text['languages'], command=change_language)
+    optm_language.pack(padx=5, pady=5)
+    
+    #Select Archive button
+    btn_browse = tk.Button(frame_first, text=text['btn_browse'][language.get()], command=browse_button)
+    btn_browse.pack(anchor=tk.CENTER, padx=10, pady=10)
+    
+    #Select Folder button
+    btn_dir = tk.Button(frame_first, text=text['btn_dir'][language.get()], command=dir_button)
+    btn_dir.pack(anchor=tk.CENTER, padx=10, pady=10)
 
-        #Select Archive button
-        btn_browse = tk.Button(frame_first, text=text['btn_browse'][language.get()], command=browse_button)
-        btn_browse.pack(anchor=tk.CENTER, padx=10, pady=10)
+    #patch button
+    btn_patch = tk.Button(frame_third, text=text['btn_patch'][language.get()], command=patch_button)
+    btn_patch.pack(anchor=tk.CENTER, padx=10, pady=10)
+    btn_patch['state'] = 'disabled'
+    
+    #Statusbar
+    statusbar = tk.Label(frame_third, text='', bd=1, relief=tk.SUNKEN, anchor=tk.W, wraplength=500)
+    statusbar.pack(side=tk.BOTTOM, padx=3, fill=tk.X)
 
-        #Select Folder button
-        btn_dir = tk.Button(frame_first, text=text['btn_dir'][language.get()], command=dir_button)
-        btn_dir.pack(anchor=tk.CENTER, padx=10, pady=10)
-
-        #patch button
-        btn_patch = tk.Button(frame_third, text=text['btn_patch'][language.get()], command=patch_button)
-        btn_patch.pack(anchor=tk.CENTER, padx=10, pady=10)
-        btn_patch['state'] = 'disabled'
-
-        #Statusbar
-        statusbar = tk.Label(frame_third, text='', bd=1, relief=tk.SUNKEN, anchor=tk.W, wraplength=500)
-        statusbar.pack(side=tk.BOTTOM, padx=3, fill=tk.X)
-
-        #Pack frames
-        frame_first.pack()
-        frame_second.pack()
-        frame_third.pack(expand=True, fill=tk.X)
-
-        #Start app
-        window.mainloop()
+    #Pack frames
+    frame_first.pack()
+    frame_second.pack()
+    frame_third.pack(expand=True, fill=tk.X)
+    
+    #Start app
+    window.mainloop()
