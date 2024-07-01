@@ -13,16 +13,26 @@ from os import makedirs, listdir
 from datetime import datetime
 from pathlib import Path
 
+class Language:
+    def __init__(self, language):
+        self.language = language
+        
+    def get(self):
+        return self.language
+
 def sm(message, error_message = False, info_message = False, update_status = True):
     #My standard Error message, statusbar update, and logging function
     logging.info(message)
-    if error_message:
-        messagebox.showerror('Error', message)
-    if info_message:
-        messagebox.showinfo('Info', message)
-    if update_status:
-        statusbar['text'] = message
-    window.update()
+    if args.input:
+        print(message)
+    else:
+        if error_message:
+            messagebox.showerror('Error', message)
+        if info_message:
+            messagebox.showinfo('Info', message)
+        if update_status:
+            statusbar['text'] = message
+        window.update()
 
 def browse_button():
     btn_browse['state'] = 'disabled'
@@ -100,7 +110,6 @@ def patch_archive(archive):
         sm(f'{archive} ' + text['Patching archive complete'][language.get()])
     return patched
 
-
 def change_language(lingo):
     #Language handling
     sm(f'Using {lingo}.', update_status = False)
@@ -113,7 +122,7 @@ def change_language(lingo):
 if __name__ == '__main__':
     #Console mode
     parser = argparse.ArgumentParser()
-    parser.add_argument("-cm", "--consolemode", help="console application mode", action="store_true")
+    parser.add_argument("-i", "--input", help="input archive file or directory")
     args = parser.parse_args()
 
     #Make logs.
@@ -137,7 +146,7 @@ if __name__ == '__main__':
     with Path(exedir).joinpath('translate.json').open(encoding='utf-8') as translate_json:
         text = json.load(translate_json)
 
-    if not args.consolemode:
+    if not args.input:
         #Create base app window
         window = tk.Tk()
         icon = tk.PhotoImage(file=str(Path(exedir).joinpath('Icon.gif')))
@@ -182,3 +191,24 @@ if __name__ == '__main__':
 
         #Start app
         window.mainloop()
+
+    else:
+        language = Language(text['languages'][0])
+        input_archive = args.input
+        if input_archive and input_archive.endswith('.ba2'):
+            patch_archive(args.input)
+        elif input_archive:
+            i = 0
+            list_of_patched_archives = text['Patched archive list'][language.get()]
+            base_dir = input_archive
+            for x in listdir(base_dir):
+                if x.endswith(".ba2"):
+                    archive_path = base_dir + '/' + x
+                    if patch_archive(archive_path):
+                        list_of_patched_archives += f'\n{archive_path}'
+                        i += 1
+            if i > 0:
+                sm(list_of_patched_archives, False, True, False)
+                sm(str(i) + text['Files successfully patched'][language.get()])
+            else:
+                sm(base_dir + text['No archives patched'][language.get()], False, True)
