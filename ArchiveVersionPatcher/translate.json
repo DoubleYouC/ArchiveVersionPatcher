@@ -1,51 +1,67 @@
 {
-  "languages": [ "English" ],
+  "languages": [ "English", "German" ],
   "title": {
-    "English": "BA2 Archive Version Patcher"
+    "English": "BA2 Archive Version Patcher",
+    "German": "BA2 Archivversionspatcher"
   },
   "btn_browse": {
-    "English": "Select Archive"
+    "English": "Select Archive",
+    "German": "Archiv Auswählen"
   },
   "btn_dir": {
-    "English": "Select Directory"
+    "English": "Select Directory",
+    "German": "Verzeichnis Auswählen"
   },
   "btn_patch": {
-    "English": "Patch"
+    "English": "Patch",
+    "German": "Patchen"
   },
   "Select archive window": {
-    "English": "Select Archive..."
+    "English": "Select Archive...",
+    "German": "Archiv Auswählen..."
   },
   "Select directory window": {
-    "English": "Select directory containing BA2 files to be patched..."
+    "English": "Select directory containing BA2 files to be patched...",
+    "German": "Verzeichnis mit zu patchenden BA2-Dateien auswählen..."
   },
   "Archive selected": {
-    "English": "Archive selected: "
+    "English": "Archive selected: ",
+    "German": "Gewähltes Archiv: "
   },
   "Directory selected": {
-    "English": "Directory selected: "
+    "English": "Directory selected: ",
+    "German": "Gewähltes Verzeichnis: "
   },
   "Patching archive message": {
-    "English": "Patching"
+    "English": "Patching",
+    "German": "Patche"
   },
   "Patching archive complete": {
-    "English": "was successfully patched."
+    "English": "was successfully patched.",
+    "German": "wurde erfolgreich gepatcht."
   },
   "Files successfully patched": {
-    "English": " files were successfully patched."
+    "English": " files were successfully patched.",
+    "German": " Dateien wurden erfolgreich gepatcht."
   },
   "Permission Error": {
-    "English": "You lack the permissions to modify "
+    "English": "You lack the permissions to modify ",
+    "German": "Keine Berechtigung zum Modifzieren von "
   },
   "Unexpected version": {
-    "English": " does not have the expected version of either 7 or 8. The file will not be patched."
+    "English": " does not have the expected version of either 7 or 8. The file will not be patched.",
+    "German": " hat nicht die erwartete Version von 7 oder 8. Diese Datei wird nicht gepatcht."
   },
   "No patch needed": {
-    "English": " is already version 1. The file will not be patched."
+    "English": " is already version 1. The file will not be patched.",
+    "German": " ist bereits Version 1. Diese Datei wird nicht gepatcht."
   },
   "Patched archive list": {
-    "English": "List of patched archives:"
+    "English": "List of patched archives:",
+    "German": "Liste der gepatchten Archive:"
   },
   "No archives patched": {
-    "English": " did not contain any archives that required patching."
+    "English": " did not contain any archives that required patching.",
+    "German": " enthielt keine Archive, die gepatcht werden müssen."
   }
 }
