@@ -94,14 +94,33 @@ def patch_archive(archive):
         with open(archive, "r+b") as f:
             f.seek(4)
             byte = f.read(1)
-            if byte == b'\x07' or byte == b'\x08':
-                f.seek(4)
-                f.write(b'\x01')
-                patched = True
-            elif byte == b'\x01':
-                sm(archive + text['No patch needed'][language.get()])
-            else:
-                sm(archive + text['Unexpected version'][language.get()], True)
+            if version.get() == '1':
+                if byte == b'\x07' or byte == b'\x08':
+                    f.seek(4)
+                    f.write(b'\x01')
+                    patched = True
+                elif byte == b'\x01':
+                    sm(archive + text['No patch needed'][language.get()])
+                else:
+                    sm(archive + text['Unexpected version'][language.get()], True)
+            elif version.get() == '7':
+                if byte == b'\x01' or byte == b'\x08':
+                    f.seek(4)
+                    f.write(b'\x07')
+                    patched = True
+                elif byte == b'\x07':
+                    sm(archive + text['No patch needed'][language.get()])
+                else:
+                    sm(archive + text['Unexpected version'][language.get()], True)
+            elif version.get() == '8':
+                if byte == b'\x01' or byte == b'\x07':
+                    f.seek(4)
+                    f.write(b'\x08')
+                    patched = True
+                elif byte == b'\x08':
+                    sm(archive + text['No patch needed'][language.get()])
+                else:
+                    sm(archive + text['Unexpected version'][language.get()], True)
             f.close()
     except PermissionError:
         sm(text['Permission Error'][language.get()] + archive, True)
@@ -173,7 +192,19 @@ if __name__ == '__main__':
 
         #Select Folder button
         btn_dir = tk.Button(frame_first, text=text['btn_dir'][language.get()], command=dir_button)
-        btn_dir.pack(anchor=tk.CENTER, padx=10, pady=10)
+        btn_dir.pack(anchor=tk.CENTER, pady=10)
+
+        #Version label
+        lbl_version = tk.Label(frame_second, text=text['version_label'][language.get()])
+        lbl_version.pack(anchor=tk.CENTER, pady=10, side=tk.LEFT)
+
+        #Version dropdown
+        version_options = ['1', '7', '8']
+        version = tk.StringVar(window)
+        version.set('1')
+        optm_version = ttk.OptionMenu(
+            frame_second, version, '1', *version_options)
+        optm_version.pack(anchor=tk.CENTER, pady=10)
 
         #patch button
         btn_patch = tk.Button(frame_third, text=text['btn_patch'][language.get()], command=patch_button)

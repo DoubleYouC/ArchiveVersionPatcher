@@ -1,5 +1,8 @@
 {
-  "languages": [ "English", "German" ],
+  "languages": [
+    "English",
+    "German"
+  ],
   "title": {
     "English": "BA2 Archive Version Patcher",
     "German": "BA2 Archivversionspatcher"
@@ -15,6 +18,10 @@
   "btn_patch": {
     "English": "Patch",
     "German": "Patchen"
+  },
+  "version_label": {
+    "English": "Version: ",
+    "German": "Version: "
   },
   "Select archive window": {
     "English": "Select Archive...",
